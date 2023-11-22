@@ -3,20 +3,9 @@
 namespace app\modules\api\controllers;
 
 use app\modules\api\resources\ThemeResource;
-use yii\filters\auth\HttpBearerAuth;
-use yii\rest\ActiveController;
+use app\modules\api\controllers\BaseController;
 
-class ThemeController extends ActiveController
+class ThemeController extends BaseController
 {
     public $modelClass = ThemeResource::class;
-
-    public function behaviors()
-    {
-        $behaviors = parent::behaviors();
-        $behaviors['authenticator']['authMethods'] = [
-            HttpBearerAuth::class
-        ];
-
-        return $behaviors;
-    }
 }

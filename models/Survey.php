@@ -3,9 +3,6 @@
 namespace app\models;
 
 use Yii;
-use yii\behaviors\BlameableBehavior;
-use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%surveys}}".
@@ -20,10 +17,12 @@ use yii\db\ActiveRecord;
  * @property int $status
  * @property int|null $created_at
  * @property int|null $updated_at
+ * @property int|null $setting_id
  *
  * @property Page[] $pages
  * @property Question[] $questions
  * @property Response[] $responses
+ * @property SurveySetting $setting
  * @property Theme $theme
  * @property User $user
  */
@@ -37,21 +36,6 @@ class Survey extends \yii\db\ActiveRecord
         return '{{%surveys}}';
     }
 
-    public function behaviors()
-    {
-        return [
-            TimestampBehavior::class,
-            [
-                'class' => BlameableBehavior::class,
-                'createdByAttribute' => 'user_id',
-                'updatedByAttribute' => false,
-                'attributes' => [
-                    ActiveRecord::EVENT_BEFORE_VALIDATE => ['user_id']
-                ]
-            ]
-        ];
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -59,8 +43,9 @@ class Survey extends \yii\db\ActiveRecord
     {
         return [
             [['user_id', 'title', 'category', 'type', 'status'], 'required'],
-            [['user_id', 'theme_id', 'status', 'created_at', 'updated_at'], 'integer'],
+            [['user_id', 'theme_id', 'status', 'created_at', 'updated_at', 'setting_id'], 'integer'],
             [['title', 'description', 'category', 'type'], 'string', 'max' => 255],
+            [['setting_id'], 'exist', 'skipOnError' => true, 'targetClass' => SurveySetting::class, 'targetAttribute' => ['setting_id' => 'id']],
             [['theme_id'], 'exist', 'skipOnError' => true, 'targetClass' => Theme::class, 'targetAttribute' => ['theme_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
@@ -82,6 +67,7 @@ class Survey extends \yii\db\ActiveRecord
             'status' => Yii::t('app', 'Status'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
+            'setting_id' => Yii::t('app', 'Setting ID'),
         ];
     }
 
@@ -113,6 +99,16 @@ class Survey extends \yii\db\ActiveRecord
     public function getResponses()
     {
         return $this->hasMany(Response::class, ['survey_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Setting]].
+     *
+     * @return \yii\db\ActiveQuery|\app\models\query\SurveySettingQuery
+     */
+    public function getSetting()
+    {
+        return $this->hasOne(SurveySetting::class, ['id' => 'setting_id']);
     }
 
     /**

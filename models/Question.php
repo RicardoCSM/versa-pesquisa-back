@@ -18,7 +18,10 @@ use Yii;
  * @property float|null $score
  *
  * @property Answer[] $answers
+ * @property Logic[] $logics
+ * @property Logic[] $logics0
  * @property Page $page
+ * @property QuestionOption[] $questionOptions
  * @property Survey $survey
  */
 class Question extends \yii\db\ActiveRecord
@@ -75,6 +78,26 @@ class Question extends \yii\db\ActiveRecord
     }
 
     /**
+     * Gets query for [[Logics]].
+     *
+     * @return \yii\db\ActiveQuery|\app\models\query\LogicQuery
+     */
+    public function getLogics()
+    {
+        return $this->hasMany(Logic::class, ['question_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Logics0]].
+     *
+     * @return \yii\db\ActiveQuery|\app\models\query\LogicQuery
+     */
+    public function getLogics0()
+    {
+        return $this->hasMany(Logic::class, ['target_question_id' => 'id']);
+    }
+
+    /**
      * Gets query for [[Page]].
      *
      * @return \yii\db\ActiveQuery|\app\models\query\PageQuery
@@ -82,6 +105,16 @@ class Question extends \yii\db\ActiveRecord
     public function getPage()
     {
         return $this->hasOne(Page::class, ['id' => 'page_id']);
+    }
+
+    /**
+     * Gets query for [[QuestionOptions]].
+     *
+     * @return \yii\db\ActiveQuery|\app\models\query\QuestionOptionQuery
+     */
+    public function getQuestionOptions()
+    {
+        return $this->hasMany(QuestionOption::class, ['question_id' => 'id']);
     }
 
     /**

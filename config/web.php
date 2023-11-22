@@ -54,7 +54,7 @@ $config = [
                 [
                     'class' => \yii\rest\UrlRule::class,
                     'pluralize' => false,
-                    'controller' => ['api/theme', 'api/survey', 'api/page', 'api/response', 'api/question', 'api/answer', 'api/survey-setting']
+                    'controller' => ['api/theme', 'api/survey', 'api/page', 'api/response', 'api/question', 'api/answer', 'api/survey-setting', 'api/question-option', 'api/logic']
                 ]
             ],
         ],

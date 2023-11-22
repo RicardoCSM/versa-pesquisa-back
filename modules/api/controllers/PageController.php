@@ -3,20 +3,9 @@
 namespace app\modules\api\controllers;
 
 use app\modules\api\resources\PageResource;
-use yii\filters\auth\HttpBearerAuth;
-use yii\rest\ActiveController;
+use app\modules\api\controllers\BaseController;
 
-class PageController extends ActiveController
+class PageController extends BaseController
 {
     public $modelClass = PageResource::class;
-
-    public function behaviors()
-    {
-        $behaviors = parent::behaviors();
-        $behaviors['authenticator']['authMethods'] = [
-            HttpBearerAuth::class
-        ];
-
-        return $behaviors;
-    }
 }
