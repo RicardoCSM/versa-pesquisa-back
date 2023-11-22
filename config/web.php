@@ -50,10 +50,11 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'DELETE api/image/delete/<id:\d+>' => 'api/image/delete',
                 [
                     'class' => \yii\rest\UrlRule::class,
                     'pluralize' => false,
-                    'controller' => ['api/theme', 'api/survey', 'api/page', 'api/response', 'api/question', 'api/answer']
+                    'controller' => ['api/theme', 'api/survey', 'api/page', 'api/response', 'api/question', 'api/answer', 'api/survey-setting']
                 ]
             ],
         ],
