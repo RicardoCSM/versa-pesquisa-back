@@ -87,11 +87,7 @@ class QuestionOptionController extends BaseController
     {
         $data = Yii::$app->getRequest()->getBodyParams();
 
-        try {
-            $result = QuestionOptionResource::createQuestionOption($this->questionId, $data);
-        } catch (NotFoundHttpException $e) {
-            throw new NotFoundHttpException("Question not found: $this->questionId");
-        }
+        $result = QuestionOptionResource::createQuestionOption($this->questionId, $data);
 
         if (!is_array($result)) {
             $response = Yii::$app->getResponse();

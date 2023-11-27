@@ -79,7 +79,7 @@ class AnswerController extends ActiveController
     }
 
     /**
-     * Creates a new question associated with a response.
+     * Creates a new answer associated with a response and question.
      * @return mixed
      * @throws NotFoundHttpException if the response is not found
      */
@@ -87,11 +87,7 @@ class AnswerController extends ActiveController
     {
         $data = Yii::$app->getRequest()->getBodyParams();
 
-        try {
-            $result = AnswerResource::createAnswer($this->responseId, $this->questionId, $data);
-        } catch (NotFoundHttpException $e) {
-            throw new NotFoundHttpException("Response or Question not found: $this->responseId and $this->questionId");
-        }
+        $result = AnswerResource::createAnswer($this->responseId, $this->questionId, $data);
 
         if (!is_array($result)) {
             $response = Yii::$app->getResponse();

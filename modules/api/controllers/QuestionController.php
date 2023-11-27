@@ -89,11 +89,7 @@ class QuestionController extends BaseController
     {
         $data = Yii::$app->getRequest()->getBodyParams();
 
-        try {
-            $result = QuestionResource::createQuestion($this->surveyId, $this->pageId, $data);
-        } catch (NotFoundHttpException $e) {
-            throw new NotFoundHttpException("Survey or Page not found: $this->surveyId and $this->pageId");
-        }
+        $result = QuestionResource::createQuestion($this->surveyId, $this->pageId, $data);
 
         if (!is_array($result)) {
             $response = Yii::$app->getResponse();

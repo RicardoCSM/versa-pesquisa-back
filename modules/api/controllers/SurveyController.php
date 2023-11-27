@@ -23,6 +23,7 @@ class SurveyController extends BaseController
     {
         $actions = parent::actions();
         $actions['index']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
+        unset($actions['create']);
 
         return $actions;
     }
@@ -71,4 +72,24 @@ class SurveyController extends BaseController
             throw new NotFoundHttpException('The requested survey does not exist.');
         }
     }
+
+    /**
+     * Creates a new survey associated with a survey.
+     * @return mixed
+     * @throws NotFoundHttpException if the survey is not found
+     */
+    public function actionCreate()
+    {
+        $data = Yii::$app->getRequest()->getBodyParams();
+
+        $result = SurveyResource::createSurvey($data);
+
+        if (!is_array($result)) {
+            $response = Yii::$app->getResponse();
+            $response->setStatusCode(201);
+        }
+
+        return $result;
+    }
+    
 }

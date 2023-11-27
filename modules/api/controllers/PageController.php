@@ -80,7 +80,7 @@ class PageController extends BaseController
     }
 
     /**
-     * Creates a new question associated with a survey.
+     * Creates a new page associated with a survey.
      * @return mixed
      * @throws NotFoundHttpException if the survey is not found
      */
@@ -88,11 +88,7 @@ class PageController extends BaseController
     {
         $data = Yii::$app->getRequest()->getBodyParams();
 
-        try {
-            $result = PageResource::createPage($this->surveyId, $data);
-        } catch (NotFoundHttpException $e) {
-            throw new NotFoundHttpException("Survey not found: $this->surveyId");
-        }
+        $result = PageResource::createPage($this->surveyId, $data);
 
         if (!is_array($result)) {
             $response = Yii::$app->getResponse();

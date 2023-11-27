@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use yii\behaviors\BlameableBehavior;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "{{%surveys}}".
@@ -36,13 +38,25 @@ class Survey extends \yii\db\ActiveRecord
         return '{{%surveys}}';
     }
 
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::class,
+            [
+                'class' => BlameableBehavior::class,
+                'createdByAttribute' => 'user_id',
+                'updatedByAttribute' => false
+            ]
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['user_id', 'title', 'category', 'type', 'status'], 'required'],
+            [['title', 'category', 'type', 'status'], 'required'],
             [['user_id', 'theme_id', 'status', 'created_at', 'updated_at', 'setting_id'], 'integer'],
             [['title', 'description', 'category', 'type'], 'string', 'max' => 255],
             [['setting_id'], 'exist', 'skipOnError' => true, 'targetClass' => SurveySetting::class, 'targetAttribute' => ['setting_id' => 'id']],
