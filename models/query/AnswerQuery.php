@@ -31,4 +31,22 @@ class AnswerQuery extends \yii\db\ActiveQuery
     {
         return parent::one($db);
     }
+
+    /**
+     * {@inheritdoc}
+     * @return \app\models\Answer[]|array
+     */
+    public function fromResponseAndQuestion($response_id, $question_id)
+    {
+        return $this->andWhere(['response_id' => $response_id, 'question_id' => $question_id]);
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return \app\models\Answer|array|null
+     */
+    public function withResponseAndQuestion($id, $response_id, $question_id)
+    {
+        return $this->andWhere(['id' => $id, 'response_id' => $response_id, 'question_id' => $question_id])->one();
+    }
 }

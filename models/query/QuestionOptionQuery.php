@@ -31,4 +31,22 @@ class QuestionOptionQuery extends \yii\db\ActiveQuery
     {
         return parent::one($db);
     }
+
+    /**
+     * {@inheritdoc}
+     * @return \app\models\QuestionOption[]|array
+     */
+    public function fromQuestion($question_id)
+    {
+        return $this->andWhere(['question_id' => $question_id]);
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return \app\models\QuestionOption|array|null
+     */
+    public function withQuestion($id, $question_id)
+    {
+        return $this->andWhere(['id' => $id, 'question_id' => $question_id])->one();
+    }
 }

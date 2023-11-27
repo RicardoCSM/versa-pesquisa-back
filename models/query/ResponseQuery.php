@@ -31,4 +31,22 @@ class ResponseQuery extends \yii\db\ActiveQuery
     {
         return parent::one($db);
     }
+
+    /**
+     * {@inheritdoc}
+     * @return \app\models\Response[]|array
+     */
+    public function fromSurvey($survey_id)
+    {
+        return $this->andWhere(['survey_id' => $survey_id]);
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return \app\models\Response|array|null
+     */
+    public function withSurvey($id, $survey_id)
+    {
+        return $this->andWhere(['id' => $id, 'survey_id' => $survey_id])->one();
+    }
 }

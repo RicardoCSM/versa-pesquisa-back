@@ -31,4 +31,13 @@ class SurveyQuery extends \yii\db\ActiveQuery
     {
         return parent::one($db);
     }
+
+    /**
+     * {@inheritdoc}
+     * @return \app\models\Survey[]|array
+     */
+    public function byUser($id)
+    {
+        return $this->andWhere(['user_id' => $id]);
+    }
 }
