@@ -58,7 +58,7 @@ The API should now be accessible at [http://localhost:8000](http://localhost:800
 
 - `config/web` - Contains route definitions with all API endpoints
 - `models` - General models
-- `models/query` - Query models
+- `models/query` - Models ActiveQuery
 - `migrations` - Database migrations
 - `module/api` - API module
 - - `models` - Models specific to the API module
