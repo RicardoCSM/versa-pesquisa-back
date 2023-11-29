@@ -61,9 +61,9 @@ The API should now be accessible at [http://localhost:8000](http://localhost:800
 - `models/query` - Query models
 - `migrations` - Database migrations
 - `module/api` - API module
- - `models` - Models specific to the API module
- - `controllers` - Controllers specific to the API module
- - `resources` - Resources specific to the API module
+- - `models` - Models specific to the API module
+- - `controllers` - Controllers specific to the API module
+- - `resources` - Resources specific to the API module
 
 ## Docker Compose
 
