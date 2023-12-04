@@ -6,11 +6,19 @@ use app\modules\api\models\LoginForm;
 use app\modules\api\models\SignupForm;
 use app\modules\api\resources\UserResource;
 use Yii;
+use yii\filters\Cors;
 use yii\rest\Controller;
 use yii\web\UnauthorizedHttpException;
 
 class UserController extends Controller
 {
+    public function behaviors()
+    {
+        return array_merge(parent::behaviors(), [
+            'cors' => Cors::class
+        ]);
+    }
+
     /**
      * Logs in a user.
      *
