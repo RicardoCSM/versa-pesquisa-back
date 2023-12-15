@@ -50,10 +50,6 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                // Image custom route
-                'DELETE api/image/delete/<id:\d+>' => 'api/image/delete',
-
-                // REST Urls
                 [
                     'class' => \yii\rest\UrlRule::class,
                     'controller' => ['api/theme', 'api/survey', 'api/question', 'api/question-option', 'api/survey-setting', 'api/logic', 'api/response', 'api/answer',  'api/page']

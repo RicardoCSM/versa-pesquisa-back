@@ -18,7 +18,7 @@ Versa Pesquisa Back is developed using Yii 2.0, a PHP framework for web applicat
 ### Cloning the repository
 
 ```shell
-git@github.com:RicardoCSM/versa-pesquisa-back.git
+git clone git@github.com:RicardoCSM/versa-pesquisa-back.git
 cd versa-pesquisa-back
 ```
 
