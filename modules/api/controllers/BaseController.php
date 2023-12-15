@@ -15,9 +15,17 @@ class BaseController extends ActiveController
         $auth['authMethods'] = [
             HttpBearerAuth::class
         ];
-        unset($behaviors['authenticator']);
+        unset($behaviors['authenticator']); 
         $behaviors['cors'] = [
-            'class' => Cors::class
+            'class' => Cors::class,
+            'cors' => [
+                'Origin' => ['*'],
+                'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
+                'Access-Control-Request-Headers' => ['*'],
+                'Access-Control-Allow-Credentials' => null,
+                'Access-Control-Max-Age' => 86400,
+                'Access-Control-Expose-Headers' => ['X-Pagination-Total-Count'],
+            ]
         ];
         $behaviors['authenticator'] = $auth;
 

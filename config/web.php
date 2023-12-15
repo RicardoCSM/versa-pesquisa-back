@@ -53,48 +53,10 @@ $config = [
                 // Image custom route
                 'DELETE api/image/delete/<id:\d+>' => 'api/image/delete',
 
-                // Survey details route
-                'GET api/surveys/<id:\d+>/details' => 'api/survey/details',
-
-                // Pages API
-                'GET api/surveys/<survey_id:\d+>/pages' => 'api/page/index',
-                'GET api/surveys/<survey_id:\d+>/pages/<id:\d+>' => 'api/page/view',
-                'PUT api/surveys/<survey_id:\d+>/pages/<id:\d+>' => 'api/page/update',
-                'DELETE api/surveys/<survey_id:\d+>/pages/<id:\d+>' => 'api/page/delete',
-                'POST api/surveys/<survey_id:\d+>/pages' => 'api/page/create',
-
-                // Questions API
-                'GET api/surveys/<survey_id:\d+>/pages/<page_id:\d+>/questions' => 'api/question/index',
-                'GET api/surveys/<survey_id:\d+>/pages/<page_id:\d+>/questions/<id:\d+>' => 'api/question/view',
-                'PUT api/surveys/<survey_id:\d+>/pages/<page_id:\d+>/questions/<id:\d+>' => 'api/question/update',
-                'DELETE api/surveys/<survey_id:\d+>/pages/<page_id:\d+>/questions/<id:\d+>' => 'api/question/delete',
-                'POST api/surveys/<survey_id:\d+>/pages/<page_id:\d+>/questions' => 'api/question/create',
-
-                // Question Options API
-                'GET api/questions/<question_id:\d+>/options' => 'api/question-option/index',
-                'GET api/questions/<question_id:\d+>/options/<id:\d+>' => 'api/question-option/view',
-                'PUT api/questions/<question_id:\d+>/options/<id:\d+>' => 'api/question-option/update',
-                'DELETE api/questions/<question_id:\d+>/options/<id:\d+>' => 'api/question-option/delete',
-                'POST api/questions/<question_id:\d+>/options' => 'api/question-option/create',
-
-                // Responses API
-                'GET api/surveys/<survey_id:\d+>/responses' => 'api/response/index',
-                'GET api/surveys/<survey_id:\d+>/responses/<id:\d+>' => 'api/response/view',
-                'PUT api/surveys/<survey_id:\d+>/responses/<id:\d+>' => 'api/response/update',
-                'DELETE api/surveys/<survey_id:\d+>/responses/<id:\d+>' => 'api/response/delete',
-                'POST api/surveys/<survey_id:\d+>/responses' => 'api/response/create',
-
-                // Answer API
-                'GET api/responses/<response_id:\d+>/questions/<question_id:\d+>/answers' => 'api/answer/index',
-                'GET api/responses/<response_id:\d+>/questions/<question_id:\d+>/answers/<id:\d+>' => 'api/answer/view',
-                'PUT api/responses/<response_id:\d+>/questions/<question_id:\d+>/answers/<id:\d+>' => 'api/answer/update',
-                'DELETE api/responses/<response_id:\d+>/questions/<question_id:\d+>/answers/<id:\d+>' => 'api/answer/delete',
-                'POST api/responses/<response_id:\d+>/questions/<question_id:\d+>/answers' => 'api/answer/create',
-
                 // REST Urls
                 [
                     'class' => \yii\rest\UrlRule::class,
-                    'controller' => ['api/theme', 'api/survey', 'api/survey-setting', 'api/logic']
+                    'controller' => ['api/theme', 'api/survey', 'api/question', 'api/question-option', 'api/survey-setting', 'api/logic', 'api/response', 'api/answer',  'api/page']
                 ]
             ],
         ],

@@ -16,11 +16,11 @@ class m231117_194123_create_surveys_table extends Migration
             'id' => $this->primaryKey(),
             'user_id' => $this->integer()->notNull(),
             'theme_id' => $this->integer(),
-            'title' => $this->string(255)->notNull(),
+            'title' => $this->string(255)->defaultValue("My Survey"),
             'description' => $this->string(255),
-            'category' => $this->string(255)->notNull(),
-            'type' => $this->string(255)->notNull(),
-            'status' => $this->tinyInteger()->notNull(),
+            'category' => $this->string(255)->defaultValue("survey"),
+            'type' => $this->string(255)->defaultValue("1"),
+            'status' => $this->tinyInteger()->defaultValue(0),
             'created_at' => $this->integer(11),
             'updated_at' => $this->integer(11)
         ]);

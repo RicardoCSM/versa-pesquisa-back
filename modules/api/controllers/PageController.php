@@ -4,10 +4,9 @@ namespace app\modules\api\controllers;
 
 use app\modules\api\controllers\BaseController;
 use app\modules\api\resources\PageResource;
-use app\modules\api\resources\SurveyResource;
 use Yii;
-use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 class PageController extends BaseController
 {
@@ -17,84 +16,41 @@ class PageController extends BaseController
     public $modelClass = PageResource::class;
 
     /**
-     * @var int The survey ID
-     */
-    protected $surveyId;
-
-    /**
-     * Set the survey ID before running an action.
-     * @param \yii\base\Action $action
-     * @return bool
-     */
-    public function beforeAction($action)
-    {
-        $this->surveyId = Yii::$app->request->get('survey_id');
-        return parent::beforeAction($action);
-    }
-
-    /**
-     * Customizes the default actions for the controller.
-     * @return array
-     */
-    public function actions()
-    {
-        $actions = parent::actions();
-
-        $actions['index']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
-
-        $actions['view']['findModel'] = [$this, 'findModel'];
-        $actions['update']['findModel'] = [$this, 'findModel'];
-        $actions['delete']['findModel'] = [$this, 'findModel'];
-
-        unset($actions['create']);
-
-        return $actions;
-    }
-
-    /**
-     * Prepares the data provider for the index action.
-     * @return ActiveDataProvider
-     */
-    public function prepareDataProvider()
-    {
-        return new ActiveDataProvider([
-            'query' => $this->modelClass::find()->fromSurvey($this->surveyId),
-        ]);
-    }
-
-    /**
-     * Finds a page by ID for update, and delete actions.
+     * Finds the Page model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     *
      * @param int $id
-     * @return mixed
-     * @throws NotFoundHttpException if the page is not found
+     * @return Survey the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
      */
-    public function findModel($id)
+    protected function findModel($id)
     {
-        $model = $this->modelClass::find()->withSurvey($id, $this->surveyId);
-
-        if ($model === null) {
-            throw new NotFoundHttpException("Page not found or not part of the survey: $id");
+        if (($model = $this->modelClass::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
         }
-
-        return $model;
     }
 
     /**
-     * Creates a new page associated with a survey.
-     * @return mixed
-     * @throws NotFoundHttpException if the survey is not found
+     * Get the number of questions per page for a specific page.
+     *
+     * @param int $id Page ID
+     * @return array
+     * @throws \yii\web\NotFoundHttpException
      */
-    public function actionCreate()
+    public function actionQuestionsPerPage($id)
     {
-        $data = Yii::$app->getRequest()->getBodyParams();
+        $page = $this->findModel($id);
 
-        $result = PageResource::createPage($this->surveyId, $data);
-
-        if (!is_array($result)) {
-            $response = Yii::$app->getResponse();
-            $response->setStatusCode(201);
+        if ($page === null) {
+            throw new \yii\web\NotFoundHttpException("Page not found with ID: $id");
         }
 
-        return $result;
+        $questionsPerPage = $page->getQuestions()->count();
+
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        return ['questionsPerPage' => $questionsPerPage];
     }
 }

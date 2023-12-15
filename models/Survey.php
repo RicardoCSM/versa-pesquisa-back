@@ -56,7 +56,6 @@ class Survey extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'category', 'type', 'status'], 'required'],
             [['user_id', 'theme_id', 'status', 'created_at', 'updated_at', 'setting_id'], 'integer'],
             [['title', 'description', 'category', 'type'], 'string', 'max' => 255],
             [['setting_id'], 'exist', 'skipOnError' => true, 'targetClass' => SurveySetting::class, 'targetAttribute' => ['setting_id' => 'id']],

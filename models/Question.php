@@ -40,7 +40,7 @@ class Question extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['survey_id', 'page_id', 'type', 'title', 'position'], 'required'],
+            [['survey_id', 'page_id'], 'required'],
             [['survey_id', 'page_id', 'position', 'obrigatory'], 'integer'],
             [['score'], 'number'],
             [['type', 'title', 'description'], 'string', 'max' => 255],

@@ -15,8 +15,8 @@ class m231122_163711_create_question_options_table extends Migration
         $this->createTable('{{%question_options}}', [
             'id' => $this->primaryKey(),
             'question_id' => $this->integer()->notNull(),
-            'option_text' => $this->string(255)->notNull(),
-            'position' => $this->integer()->notNull(),
+            'option_text' => $this->string(255)->defaultValue('Option'),
+            'position' => $this->integer(),
         ]);
 
         $this->createIndex(

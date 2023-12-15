@@ -31,7 +31,7 @@ class QuestionOption extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['question_id', 'option_text', 'position'], 'required'],
+            [['question_id'], 'required'],
             [['question_id', 'position'], 'integer'],
             [['option_text'], 'string', 'max' => 255],
             [['question_id'], 'exist', 'skipOnError' => true, 'targetClass' => Question::class, 'targetAttribute' => ['question_id' => 'id']],

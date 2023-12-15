@@ -32,7 +32,7 @@ class Page extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['survey_id', 'title'], 'required'],
+            [['survey_id'], 'required'],
             [['survey_id', 'position'], 'integer'],
             [['title', 'description'], 'string', 'max' => 255],
             [['survey_id'], 'exist', 'skipOnError' => true, 'targetClass' => Survey::class, 'targetAttribute' => ['survey_id' => 'id']],

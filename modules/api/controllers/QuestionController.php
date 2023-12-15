@@ -4,10 +4,7 @@ namespace app\modules\api\controllers;
 
 use app\modules\api\resources\QuestionResource;
 use app\modules\api\controllers\BaseController;
-use app\modules\api\resources\PageResource;
-use app\modules\api\resources\SurveyResource;
-use Yii;
-use yii\data\ActiveDataProvider;
+use app\modules\api\resources\QuestionOptionResource;
 use yii\web\NotFoundHttpException;
 
 class QuestionController extends BaseController
@@ -17,85 +14,61 @@ class QuestionController extends BaseController
      */
     public $modelClass = QuestionResource::class;
 
-    /**
-     * @var int The survey ID and page ID
-     */
-    protected $surveyId;
-    protected $pageId;
-
-    /**
-     * Set the survey ID and page ID before running an action.
-     * @param \yii\base\Action $action
-     * @return bool
-     */
-    public function beforeAction($action)
+    public function behaviors()
     {
-        $this->surveyId = Yii::$app->request->get('survey_id');
-        $this->pageId = Yii::$app->request->get('page_id');
-        return parent::beforeAction($action);
+        $behaviors = parent::behaviors();
+
+        // Unset the authenticator for the 'getDetails' action
+        $behaviors['authenticator']['except'] = ['question-options'];
+
+        return $behaviors;
     }
 
     /**
-     * Customizes the default actions for the controller.
+     * Action to get question-options by question_ids.
+     *
+     * @param $id
      * @return array
      */
-    public function actions()
+    public function actionQuestionOptions($question_id)
     {
-        $actions = parent::actions();
+        $questionOptions = QuestionOptionResource::find()->where(['question_id' => $question_id])->all();
 
-        $actions['index']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
-        $actions['view']['findModel'] = [$this, 'findModel'];
-        $actions['update']['findModel'] = [$this, 'findModel'];
-        $actions['delete']['findModel'] = [$this, 'findModel'];
-        unset($actions['create']);
-
-        return $actions;
+        return $questionOptions;
     }
 
     /**
-     * Prepares the data provider for the index action.
-     * @return ActiveDataProvider
+     * Action to get details of a question.
+     *
+     * @param $survey_id
+     * @return array
+     * @throws NotFoundHttpException
      */
-    public function prepareDataProvider()
+    public function actionDetails($survey_id)
     {
-        return new ActiveDataProvider([
-            'query' => $this->modelClass::find()->fromSurveyAndPage($this->surveyId, $this->pageId),
-        ]);
-    }
+        $questions = QuestionResource::find()->where(['survey_id' => $survey_id])->all();
 
-    /**
-     * Finds a model by ID for update, and delete actions.
-     * @param int $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model is not found
-     */
-    public function findModel($id)
-    {
-        $model = $this->modelClass::find()->withSurveyAndPage($id, $this->surveyId, $this->pageId);
-
-        if ($model === null) {
-            throw new NotFoundHttpException("Object not found or not part of the survey: $id");
+        if (empty($questions)) {
+            throw new NotFoundHttpException('No questions found for the specified survey_id.');
         }
 
-        return $model;
-    }
+        $details = [];
 
-    /**
-     * Creates a new question associated with a survey.
-     * @return mixed
-     * @throws NotFoundHttpException if the survey is not found
-     */
-    public function actionCreate()
-    {
-        $data = Yii::$app->getRequest()->getBodyParams();
+        foreach ($questions as $question) {
+            $questionDetails = [
+                'question_id' => $question->id,
+                'question_title' => $question->title,
+                'question_type' => $question->type,
+                'answers' => $question->getAnswers($question->id)->all()
+            ];
 
-        $result = QuestionResource::createQuestion($this->surveyId, $this->pageId, $data);
+            if ($question->type === 'multipleChoice') {
+                $questionDetails['question_options'] = $question->getQuestionOptions($question->id)->all();
+            }
 
-        if (!is_array($result)) {
-            $response = Yii::$app->getResponse();
-            $response->setStatusCode(201);
+            $details[] = $questionDetails;
         }
 
-        return $result;
+        return $details;
     }
 }

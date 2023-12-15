@@ -16,10 +16,10 @@ class m231120_180643_create_questions_table extends Migration
             'id' => $this->primaryKey(),
             'survey_id' => $this->integer()->notNull(),
             'page_id' => $this->integer()->notNull(),
-            'type' => $this->string(255)->notNull(),
-            'title' => $this->string(255)->notNull(),
+            'type' => $this->string(255)->defaultValue('openEnded'),
+            'title' => $this->string(255)->defaultValue('This is a example of a question'),
             'description' => $this->string(255),
-            'position' => $this->integer()->notNull(),
+            'position' => $this->integer(),
             'obrigatory' => $this->tinyInteger(),
             'score' => $this->float(),
         ]);
